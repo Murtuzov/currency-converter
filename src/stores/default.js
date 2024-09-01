@@ -15,8 +15,11 @@ export const useDefaultStore = defineStore({
   actions: {
     async getExchangeRates() {
       try {
-        const data = await fetch("https://status.neuralgeneration.com/api/currency");
-        this.exchange_rates = await data.json();
+        const response = await fetch("https://status.neuralgeneration.com/api/currency");
+        if (!response.ok) {
+          throw new Error(`Ошибка: ${response.status}`);
+        }
+        this.exchange_rates = await response.json();
       } catch (error) {
         console.log("При получении актуального курса произошла ошибка");
       }
